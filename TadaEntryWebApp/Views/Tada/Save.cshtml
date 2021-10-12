@@ -1,0 +1,127 @@
+﻿@using System.Activities.Expressions
+@model TadaEntryWebApp.Models.Tada
+
+@{
+    ViewBag.Title = "Save";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Save TA/DA</title>
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker3.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            @*<div class="logo">
+                    <a href="#"><img src="img/2.jpg" alt="" /></a>
+                </div>*@
+            <div class="menu">
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="../Tada/Save">Save TA/DA</a></li>
+                        <li><a href="#">View Department</a></li>
+                        <li><a href="#">Save Cource</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "signupForm" }))
+    {
+        <div align="center">
+            <fieldset style="width: 60%">
+                <legend>TADA Entry</legend>
+
+                <table>
+                    <tr>
+                        <td>@Html.LabelFor(x => x.Date)</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.Date)
+                            @Html.ValidationMessageFor(x => x.Date)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>@Html.LabelFor(x => x.EmployeeId)</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.EmployeeId, new SelectList(ViewBag.Employees, "Value", "Text"))
+                            @Html.ValidationMessageFor(x => x.EmployeeId)
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(x => x.TravelCost)</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.TravelCost)
+                            @Html.ValidationMessageFor(x => x.TravelCost)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(x => x.LunchCost)</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.LunchCost)
+                            @Html.ValidationMessageFor(x => x.LunchCost)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(x => x.InstrumentCost)</td>
+                        <td>
+                            @Html.TextBoxFor(x => x.InstrumentCost)
+                            @Html.ValidationMessageFor(x => x.InstrumentCost)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(x => x.IsPaid)</td>
+                        <td>
+                            @Html.DropDownListFor(x => x.IsPaid, new SelectList(ViewBag.IsPaid, "Value", "Text"))
+                            @Html.ValidationMessageFor(x => x.IsPaid)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><input type="submit"/></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @if (ViewBag.messege != null)
+                            {
+                                <label><b>@ViewBag.messege</b></label>
+                            }
+                        </td>
+                    </tr>
+
+                </table>
+            </fieldset>
+        </div>
+    }
+    
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+
+    <script>
+        $('#Date').datepicker({
+            clearBtn: true,
+            daysOfWeekHighlighted: "5",
+            autoclose: true,
+            todayHighlight: true,
+            toggleActive: true
+        });
+    </script>
+
+</body>
+</html>
