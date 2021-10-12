@@ -62,7 +62,7 @@ namespace TadaEntryWebApp.Controllers
             {
                 new SelectListItem(){ Text = "--Select--", Value = ""},
                 new SelectListItem(){ Text = "Paid", Value = "1"},
-                new SelectListItem(){ Text = "Not Paid", Value = "0"}
+                new SelectListItem(){ Text = "Unpaid", Value = "0"}
             };
             return selectListItems;
         }
