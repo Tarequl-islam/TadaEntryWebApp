@@ -55,19 +55,42 @@ namespace TadaEntryWebApp.Gateway
             return rowAffect;
         }
 
+        public List<TadaHistory> GetTadaHistory()
+        {
+            string query = "SELECT * FROM TadaHistoryView";
+            SqlCommand command = new SqlCommand(query, connection);
+            connection.Open();
+            reader = command.ExecuteReader();
+            List<TadaHistory> tadaList = new List<TadaHistory>();
+            while (reader.Read())
+            {
+                TadaHistory tadaHistory = new TadaHistory();
+                tadaHistory.Id = Convert.ToInt32(reader["Id"]);
+                tadaHistory.Date = reader["Date"].ToString();
+                tadaHistory.Name = reader["Name"].ToString();
+                tadaHistory.TravelCost = Convert.ToInt32(reader["TravelCost"]);
+                tadaHistory.LunchCost = Convert.ToInt32(reader["LunchCost"]);
+                tadaHistory.InstrumentCost = Convert.ToInt32(reader["InstrumentCost"]);
+                tadaHistory.IsPaid = Convert.ToBoolean(reader["IsPaid"]);
+                tadaHistory.TotalCost = tadaHistory.TravelCost + tadaHistory.LunchCost + tadaHistory.InstrumentCost;
+                tadaList.Add(tadaHistory);
 
-        //public int SaveResult(Result tada)
-        //{
-        //    string query = "INSERT INTO Result(StudentId, CourceId, GradeId) VALUES(@StudentId, @CourceId, @GradeId)";
-        //    SqlCommand command = new SqlCommand(query, connection);
-        //    command.Parameters.AddWithValue("@StudentId", tada.StudentId);
-        //    command.Parameters.AddWithValue("@CourceId", tada.CourceId);
-        //    command.Parameters.AddWithValue("@GradeId", tada.GradeId);
-        //    connection.Open();
-        //    int rowAffect = command.ExecuteNonQuery();
-        //    connection.Close();
-        //    return rowAffect;
-        //}
+            }
+            connection.Close();
+            return tadaList;
+        }
+
+
+        public int UpdateIsPaid(int tadaHistoryId)
+        {
+            string query = "UPDATE TadaHistory SET IsPaid = IsPaid^1 WHERE Id = @TadaHistoryId";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@TadaHistoryId", tadaHistoryId);
+            connection.Open();
+            int rowAffect = command.ExecuteNonQuery();
+            connection.Close();
+            return rowAffect;
+        }
 
     }
 }

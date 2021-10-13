@@ -15,7 +15,7 @@ namespace TadaEntryWebApp.Models
         public string Date { get; set; }
 
         [Required(ErrorMessage = "Please Select an Employee")]
-        [Display(Name = "Employee Name")]
+        [Display(Name = "Employee Name   ")]
         public int EmployeeId { get; set; }
 
         [Required]
@@ -27,12 +27,12 @@ namespace TadaEntryWebApp.Models
         public int LunchCost { get; set; }
 
         [Required]
-        [Display(Name = "Instrument Cost")]
+        [Display(Name = "Instrument Cost   ")]
         public int InstrumentCost { get; set; }
 
         [Required(ErrorMessage = "Please Select If it's paid or not")]
         [Display(Name = "Is Paid")]
-        public int IsPaid { get; set; }
+        public bool IsPaid { get; set; }
         
         
     }

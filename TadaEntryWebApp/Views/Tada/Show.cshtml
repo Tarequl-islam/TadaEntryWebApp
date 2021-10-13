@@ -1,0 +1,124 @@
+﻿@using TadaEntryWebApp.Models
+@model List<TadaEntryWebApp.Models.TadaHistory>
+@{
+    ViewBag.Title = "Show";
+    Layout = null;
+    List<TadaHistory> tadaHistories = Model.ToList();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>TADA History</title>
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet"/>
+    <link href="~/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Content/dataTables.tableTools.min.css" rel="stylesheet" />   
+    <link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.css" integrity="sha512-9tISBnhZjiw7MV4a1gbemtB9tmPcoJ7ahj8QWIc0daBCdvlKjEA48oLlo6zALYm3037tPYYulT0YQyJIJJoyMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            @*<div class="logo">
+                    <a href="#"><img src="img/2.jpg" alt="" /></a>
+                </div>*@
+            <div class="menu">
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="../Tada/Save">Save TADA</a></li>
+                        <li><a href="../Tada/Show">View TADA History</a></li>
+                        <li><a href="#">Save Cource</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <br>
+    <div align="center" >
+        <fieldset style="width: 80%">
+            <legend>TADA History</legend>
+
+            <table id="example" class="display" style="width: 90%">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Travel Cost</th>
+                    <th>Lunch Cost</th>
+                    <th>Instrument Cost</th>
+                    <th>Total Cost</th>
+                    <th>Is Paid</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (TadaHistory tadaHistory in tadaHistories)
+                {
+                    <tr>
+                        <td>@tadaHistory.Date</td>
+                        <td>@tadaHistory.Name</td>
+                        <td>@tadaHistory.TravelCost</td>
+                        <td>@tadaHistory.LunchCost</td>
+                        <td>@tadaHistory.InstrumentCost</td>
+                        <td>@tadaHistory.TotalCost</td>
+                        <td>
+                            @{
+                                if (tadaHistory.IsPaid)
+                                {
+                                    <input data-id="@tadaHistory.Id" class="toggle-class" type="checkbox"
+                                           data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Paid"
+                                           data-off="Unpaid" checked>
+                                }
+                                else
+                                {   
+                                    <input data-id="@tadaHistory.Id" class="toggle-class" type="checkbox"
+                                           data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Paid"
+                                           data-off="Unpaid">
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+    <script src="~/Scripts/dataTables.tableTools.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js" integrity="sha512-F636MAkMAhtTplahL9F6KmTfxTmYcAcjcCkyu0f0voT3N/6vzAuJ4Num55a0gEJ+hRLHhdz3vDvZpf6kqgEa5w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    
+    <script>
+        $(document).ready(function () {     /*  Function call to use JQuery Datatable*/
+            $('#example').DataTable({
+                "order": []      /*Sorted datatables in the Paid order. and sorted them based on date among paid and unpaid. to Leave unsorted, set order:[] */
+            });
+
+            $('.toggle-class').change(function(){
+                //var status = $(this).prop('checked')===true? 1:0;
+                var tadaHistoryId = $(this).data('id');
+                var json = { tadaHistoryId: tadaHistoryId }
+                $.ajax({
+                    type:"POST",
+                    url: '@Url.Action("UpdateIsPaid","Tada")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success : function(data) {
+                        console.log(data.success);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

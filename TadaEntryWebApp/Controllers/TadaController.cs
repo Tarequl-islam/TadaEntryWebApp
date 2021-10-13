@@ -17,7 +17,7 @@ namespace TadaEntryWebApp.Controllers
             tadaGateway = new TadaGateway();
         }
         //
-        // GET: /Tada/
+        // GET: /Tada/ Save
         [HttpGet]
         public ActionResult Save()
         {
@@ -25,7 +25,7 @@ namespace TadaEntryWebApp.Controllers
             ViewBag.Employees = GetEmployeesForDropdown();
             return View();
         }
-        // Save: /Tada/ 
+        //   /Tada/ Save
         [HttpPost]
         public ActionResult Save(Tada tada)
         {
@@ -53,6 +53,32 @@ namespace TadaEntryWebApp.Controllers
             return View();
         }
 
+        // GET: /Tada/ Show
+        [HttpGet]
+        public ActionResult Show()
+        {
+            List<TadaHistory> tadaHistory = tadaGateway.GetTadaHistory();
+            // Use Below Sorting function if you want to sort in the server side or do not like sort in Jquery Datatable
+            // I have sorted datatables in the Paid order. and sorted them based on date among them. 
+            tadaHistory.Sort(
+                delegate(TadaHistory p1, TadaHistory p2)
+                {
+                    int comparePaid = p1.IsPaid.CompareTo(p2.IsPaid);
+                    if (comparePaid == 0)
+                    {
+                        return p2.Date.CompareTo(p1.Date);
+                    }
+                    return comparePaid;
+                }
+            );
+            return View(tadaHistory);
+        }
+
+        public JsonResult UpdateIsPaid(int tadaHistoryId)
+        {
+            int rowEffect = tadaGateway.UpdateIsPaid(tadaHistoryId);
+            return Json(rowEffect);
+        }
 
 
         // All Business logic goes here
@@ -61,8 +87,8 @@ namespace TadaEntryWebApp.Controllers
             List<SelectListItem> selectListItems = new List<SelectListItem>()
             {
                 new SelectListItem(){ Text = "--Select--", Value = ""},
-                new SelectListItem(){ Text = "Paid", Value = "1"},
-                new SelectListItem(){ Text = "Unpaid", Value = "0"}
+                new SelectListItem(){ Text = "Paid", Value = "true"},
+                new SelectListItem(){ Text = "Unpaid", Value = "false"}
             };
             return selectListItems;
         }
