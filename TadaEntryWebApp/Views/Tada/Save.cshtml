@@ -16,7 +16,7 @@
     <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
+    <header>                    @* Using Simple Navigation bar to navigate pages. Didn't use any theme for simplicity*@
         <div class="container">
             @*<div class="logoo">
                 <a href="#"><img src="~/uatech_logo.png" alt=""/></a>
@@ -53,7 +53,7 @@
                     <tr>
                         <td>@Html.LabelFor(x => x.EmployeeId)</td>
                         <td>
-                            @Html.DropDownListFor(x => x.EmployeeId, new SelectList(ViewBag.Employees, "Value", "Text"))
+                            @Html.DropDownListFor(x => x.EmployeeId, new SelectList(ViewBag.Employees, "Value", "Text"), new{style="width: 174px"})
                             @Html.ValidationMessageFor(x => x.EmployeeId)
 
                         </td>
@@ -82,7 +82,7 @@
                     <tr>
                         <td>@Html.LabelFor(x => x.IsPaid)</td>
                         <td>
-                            @Html.DropDownListFor(x => x.IsPaid, new SelectList(ViewBag.IsPaid, "Value", "Text"))
+                            @Html.DropDownListFor(x => x.IsPaid, new SelectList(ViewBag.IsPaid, "Value", "Text"), new { style = "width: 174px"})
                             @Html.ValidationMessageFor(x => x.IsPaid)
                         </td>
                     </tr>
@@ -113,7 +113,7 @@
     <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
 
     <script>
-        $('#Date').datepicker({
+        $('#Date').datepicker({                         /*Function Call for Datepicher and other Customization*/
             format: "dd/mm/yyyy",
             todayBtn: "linked",
             clearBtn: true,

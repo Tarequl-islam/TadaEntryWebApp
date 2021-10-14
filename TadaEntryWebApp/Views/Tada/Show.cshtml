@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Show";
     Layout = null;
-    List<TadaHistory> tadaHistories = Model.ToList();
+    List<TadaHistory> tadaHistories = Model.ToList();                               @*taking TADA Histories from Model*@
 }
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,7 @@
 
 </head>
 <body>
-    <header>
+    <header>                     @* Using Simple Navigation bar to navigate pages. Didn't use any theme for simplicity*@
         <div class="container">
             @*<div class="logoo right">
                 <a href="#"><img src="~/uatech_logo.png" /></a>
@@ -64,18 +64,18 @@
                         <td>@tadaHistory.InstrumentCost</td>
                         <td>@tadaHistory.TotalCost</td>
                         <td>
-                            @{
+                            @{                                   @* Showing Toggle Button State based on Paid Status*@
                                 if (tadaHistory.IsPaid)
                                 {
                                     <input data-id="@tadaHistory.Id" class="toggle-class" type="checkbox"
-                                           data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Paid"
-                                           data-off="Unpaid" checked>
+                                           data-onstyle="success" data-offstyle="danger" data-toggle="toggle" 
+                                           data-on="Paid" data-off="Unpaid" checked>
                                 }
                                 else
                                 {   
                                     <input data-id="@tadaHistory.Id" class="toggle-class" type="checkbox"
-                                           data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Paid"
-                                           data-off="Unpaid">
+                                           data-onstyle="success" data-offstyle="danger" data-toggle="toggle" 
+                                           data-on="Paid" data-off="Unpaid">
                                 }
                             }
                         </td>
@@ -96,22 +96,22 @@
     
     <script>
         $(document).ready(function () {     
-            var table = $('#example').DataTable({   /*  Function call to use JQuery Datatable*/
-                "order": []      /* to Leave unsorted, set order:[] */
+            var table = $('#example').DataTable({                         /*  Function call to use JQuery Datatable*/
+                "order": []                                                     /* to Leave unsorted, set order:[] */
             });
-            var tableTools = new $.fn.dataTable.TableTools(table, {           /*  Function call for pdf download*/
+            var tableTools = new $.fn.dataTable.TableTools(table, {              /*  Function call for pdf download*/
                 'sSwfPath': '//cdn.datatables.net/tabletools/2.2.4/swf/copy_csv_xls_pdf.swf',
                 'aButtons': ['print','pdf']
             });
             $(tableTools.fnContainer()).insertAfter('#example_wrapper');
 
 
-            $('.toggle-class').change(function(){        /*ajax code to update Is Paid Status*/
+            $('.toggle-class').change(function(){                               /*ajax code to update Is Paid Status*/
                 var tadaHistoryId = $(this).data('id');
                 var json = { tadaHistoryId: tadaHistoryId }
                 $.ajax({
                     type:"POST",
-                    url: '@Url.Action("UpdateIsPaid","Tada")',
+                    url: '@Url.Action("UpdateIsPaid","Tada")',              /* Adding Controller Name and Method Name*/
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(json),
                     success : function(data) {

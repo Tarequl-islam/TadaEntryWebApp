@@ -4,47 +4,44 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TadaEntryWebApp.Gateway;
+using TadaEntryWebApp.Manager;
 using TadaEntryWebApp.Models;
 
 namespace TadaEntryWebApp.Controllers
 {
     public class TadaController : Controller
     {
-        private TadaGateway tadaGateway;
+        // Going to Use a Manager Layer to write all the Business Logic
+        private TadaManager tadaManager; 
 
         public TadaController()
         {
-            tadaGateway = new TadaGateway();
+            tadaManager = new TadaManager();
         }
-        //
-        // GET: /Tada/ Save
+
+        // GET: /Tada/ Save   Method for Save TADA View
         [HttpGet]
         public ActionResult Save()
         {
-            ViewBag.IsPaid = IdPaidForDropdown();
-            ViewBag.Employees = GetEmployeesForDropdown();
+            ViewBag.IsPaid = tadaManager.IdPaidForDropdown();
+            ViewBag.Employees = tadaManager.GetEmployeesForDropdown();
             return View();
         }
         //   /Tada/ Save
         [HttpPost]
         public ActionResult Save(Tada tada)
         {
-            ViewBag.IsPaid = IdPaidForDropdown();
-            ViewBag.Employees = GetEmployeesForDropdown();
+            ViewBag.IsPaid = tadaManager.IdPaidForDropdown();
+            ViewBag.Employees = tadaManager.GetEmployeesForDropdown();
 
             if (ModelState.IsValid)
             {
-                int rowAffect = tadaGateway.Save(tada);
-
-                if (rowAffect > 0)
+                string message = tadaManager.Save(tada);
+                if (message == "Save Successful!")
                 {
-                    ViewBag.Messege = "Save Successful!";
                     ModelState.Clear();
                 }
-                else
-                {
-                    ViewBag.Messege = "Save Failed!";
-                }
+                ViewBag.Messege = message;
             }
             else
             {
@@ -53,60 +50,22 @@ namespace TadaEntryWebApp.Controllers
             return View();
         }
 
-        // GET: /Tada/ Show
+        // GET: /Tada/ Show  Method for Show TADA History View
         [HttpGet]
         public ActionResult Show()
         {
-            List<TadaHistory> tadaHistory = tadaGateway.GetTadaHistory();
-            // I have sorted datatables in the Paid order. and sorted them based on date among them. 
-            tadaHistory.Sort(
-                delegate(TadaHistory p1, TadaHistory p2)
-                {
-                    int comparePaid = p1.IsPaid.CompareTo(p2.IsPaid);
-                    if (comparePaid == 0)
-                    {
-                        return Convert.ToDateTime(p2.Date).CompareTo(Convert.ToDateTime(p1.Date));
-                    }
-                    return comparePaid;
-                }
-            );
-            return View(tadaHistory);
+            List<TadaHistory> tadaHistory = tadaManager.GetTadaHistory();
+
+            return View(tadaHistory);  //sending Object to the Model
         }
 
+        // Method For Ajax call to Update database Paid or Not. 
         public JsonResult UpdateIsPaid(int tadaHistoryId)
         {
-            int rowEffect = tadaGateway.UpdateIsPaid(tadaHistoryId);
+            int rowEffect = tadaManager.UpdateIsPaid(tadaHistoryId);
             return Json(rowEffect);
         }
 
-
-        // All Business logic goes here
-        public List<SelectListItem> IdPaidForDropdown()
-        {
-            List<SelectListItem> selectListItems = new List<SelectListItem>()
-            {
-                new SelectListItem(){ Text = "--Select--", Value = ""},
-                new SelectListItem(){ Text = "Paid", Value = "true"},
-                new SelectListItem(){ Text = "Unpaid", Value = "false"}
-            };
-            return selectListItems;
-        }
-        public List<SelectListItem> GetEmployeesForDropdown()
-        {
-            List<Employee> employees = tadaGateway.GetAllEmployee();
-            List<SelectListItem> selectListItems = new List<SelectListItem>()
-            {
-                new SelectListItem(){ Text = "--Select--", Value = ""},
-            };
-            foreach (Employee employee in employees)
-            {
-                SelectListItem selectListItem = new SelectListItem();
-                selectListItem.Text = employee.Name;
-                selectListItem.Value = employee.Id.ToString();
-                selectListItems.Add(selectListItem);
-            }
-            return selectListItems;
-        }
 
         
 	}

@@ -16,9 +16,12 @@ namespace TadaEntryWebApp.Gateway
 
         public TadaGateway()
         {
+            // connection string to access Database Server. Database link Saved in the Web.config
             connectionString = WebConfigurationManager.ConnectionStrings["TadaEntryDBconString"].ConnectionString;
             connection = new SqlConnection(connectionString);
         }
+
+        // Getting all the employees from database
         public List<Employee> GetAllEmployee()
         {
             string query = "SELECT * FROM Employee";
@@ -38,7 +41,7 @@ namespace TadaEntryWebApp.Gateway
             return employeeList;
         }
 
-
+        // Saving TADA History to the Database
         public int Save(Tada tada)
         {
             string query = "INSERT INTO TadaHistory(EmployeeId, TravelCost, LunchCost, InstrumentCost, IsPaid, Date) VALUES(@EmployeeId, @TravelCost, @LunchCost, @InstrumentCost, @IsPaid, @Date)";
@@ -55,6 +58,7 @@ namespace TadaEntryWebApp.Gateway
             return rowAffect;
         }
 
+        // Getting TADA Histories from Database
         public List<TadaHistory> GetTadaHistory()
         {
             string query = "SELECT * FROM TadaHistoryView";
@@ -72,6 +76,7 @@ namespace TadaEntryWebApp.Gateway
                 tadaHistory.LunchCost = Convert.ToInt32(reader["LunchCost"]);
                 tadaHistory.InstrumentCost = Convert.ToInt32(reader["InstrumentCost"]);
                 tadaHistory.IsPaid = Convert.ToBoolean(reader["IsPaid"]);
+                // Adding Total Cost from Travel cost, Lunch Cost and Instrument Cost
                 tadaHistory.TotalCost = tadaHistory.TravelCost + tadaHistory.LunchCost + tadaHistory.InstrumentCost;
                 tadaList.Add(tadaHistory);
 
@@ -80,9 +85,10 @@ namespace TadaEntryWebApp.Gateway
             return tadaList;
         }
 
-
+        // Updating Paid Status to Database
         public int UpdateIsPaid(int tadaHistoryId)
         {
+            // Toggling The Paid status base on toggle switch in the UI.  IsPaid^1 means if IsPaid is 0 then making it 1 and vise-versa
             string query = "UPDATE TadaHistory SET IsPaid = IsPaid^1 WHERE Id = @TadaHistoryId";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@TadaHistoryId", tadaHistoryId);

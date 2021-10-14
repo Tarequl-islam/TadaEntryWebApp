@@ -120,6 +120,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Manager\TadaManager.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Tada.cs" />
     <Compile Include="Models\TadaHistory.cs" />
