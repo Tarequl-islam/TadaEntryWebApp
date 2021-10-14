@@ -5,7 +5,8 @@
  * install Visual Studio 2013,
  * install SQL Server Management Studio,
 <br>
-<br>
+
+#### Instructions
  * import attached SQL Query into SQL Server, 
  * copy your Server Name,
  * open project in Visual studio,
@@ -14,10 +15,6 @@
  * save changes and run project (press F5)
 
 <br>
-<br>
-
-
-
 
 #### how to import SQL database:
 * first create a Database named TadaEntryDB,
