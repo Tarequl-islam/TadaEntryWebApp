@@ -12,9 +12,10 @@
     <title>TADA History</title>
     <link href="~/Content/style.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.css" rel="stylesheet"/>
-    <link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />  
     <link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
-    <link href="~/Content/dataTables.tableTools.min.css" rel="stylesheet"/>
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/buttons.dataTables.min.css" rel="stylesheet" />
+
 
 </head>
 <body>
@@ -85,27 +86,30 @@
             </table>
         </fieldset>
     </div>
+   
     <script src="~/Scripts/jquery-1.9.1.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
-    <script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/jszip.min.js"></script>
+    <script src="~/Scripts/pdfmake.min.js"></script>
+    <script src="~/Scripts/vfs_fonts.js"></script>
+    <script src="~/Scripts/buttons.html5.min.js"></script>
+    <script src="~/Scripts/buttons.print.min.js"></script>
     <script src="~/Scripts/bootstrap-toggle.min.js"></script>
-    <script src="~/Scripts/dataTables.tableTools.min.js"></script>
 
-    
-    
+
+
     <script>
-        $(document).ready(function () {     
+        $(document).ready(function () {
             var table = $('#example').DataTable({                         /*  Function call to use JQuery Datatable*/
-                "order": []                                                     /* to Leave unsorted, set order:[] */
+                "order": [],                                                  /* to Leave unsorted, set order:[] */
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'pdfHtml5',
+                    text: 'Download PDF'
+                }]
             });
-            var tableTools = new $.fn.dataTable.TableTools(table, {              /*  Function call for pdf download*/
-                'sSwfPath': '//cdn.datatables.net/tabletools/2.2.4/swf/copy_csv_xls_pdf.swf',
-                'aButtons': ['print','pdf']
-            });
-            $(tableTools.fnContainer()).insertAfter('#example_wrapper');
-
-
+           
             $('.toggle-class').change(function(){                               /*ajax code to update Is Paid Status*/
                 var tadaHistoryId = $(this).data('id');
                 var json = { tadaHistoryId: tadaHistoryId }
