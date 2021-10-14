@@ -58,7 +58,6 @@ namespace TadaEntryWebApp.Controllers
         public ActionResult Show()
         {
             List<TadaHistory> tadaHistory = tadaGateway.GetTadaHistory();
-            // Use Below Sorting function if you want to sort in the server side or do not like sort in Jquery Datatable
             // I have sorted datatables in the Paid order. and sorted them based on date among them. 
             tadaHistory.Sort(
                 delegate(TadaHistory p1, TadaHistory p2)
@@ -66,7 +65,7 @@ namespace TadaEntryWebApp.Controllers
                     int comparePaid = p1.IsPaid.CompareTo(p2.IsPaid);
                     if (comparePaid == 0)
                     {
-                        return p2.Date.CompareTo(p1.Date);
+                        return Convert.ToDateTime(p2.Date).CompareTo(Convert.ToDateTime(p1.Date));
                     }
                     return comparePaid;
                 }

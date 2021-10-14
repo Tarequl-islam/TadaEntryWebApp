@@ -11,28 +11,24 @@
     <meta charset="UTF-8" />
     <title>TADA History</title>
     <link href="~/Content/style.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet"/>
     <link href="~/Content/bootstrap.css" rel="stylesheet"/>
-    <link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
-    <link href="~/Content/dataTables.tableTools.min.css" rel="stylesheet" />   
-    <link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.css" integrity="sha512-9tISBnhZjiw7MV4a1gbemtB9tmPcoJ7ahj8QWIc0daBCdvlKjEA48oLlo6zALYm3037tPYYulT0YQyJIJJoyMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />  
+    <link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+    <link href="~/Content/dataTables.tableTools.min.css" rel="stylesheet"/>
 
 </head>
 <body>
     <header>
         <div class="container">
-            @*<div class="logo">
-                    <a href="#"><img src="img/2.jpg" alt="" /></a>
-                </div>*@
+            @*<div class="logoo right">
+                <a href="#"><img src="~/uatech_logo.png" /></a>
+            </div>*@
             <div class="menu">
                 <nav>
                     <ul>
                         <li><a href="#">Home</a></li>
                         <li><a href="../Tada/Save">Save TADA</a></li>
                         <li><a href="../Tada/Show">View TADA History</a></li>
-                        <li><a href="#">Save Cource</a></li>
                         <li><a href="#">About</a></li>
                         <li><a href="#">Contact Us</a></li>
                     </ul>
@@ -92,19 +88,25 @@
     <script src="~/Scripts/jquery-1.9.1.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
     <script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
-    <script src="~/Scripts/dataTables.tableTools.min.js"></script>
     <script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js" integrity="sha512-F636MAkMAhtTplahL9F6KmTfxTmYcAcjcCkyu0f0voT3N/6vzAuJ4Num55a0gEJ+hRLHhdz3vDvZpf6kqgEa5w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/Scripts/bootstrap-toggle.min.js"></script>
+    <script src="~/Scripts/dataTables.tableTools.min.js"></script>
+
     
     
     <script>
-        $(document).ready(function () {     /*  Function call to use JQuery Datatable*/
-            $('#example').DataTable({
-                "order": []      /*Sorted datatables in the Paid order. and sorted them based on date among paid and unpaid. to Leave unsorted, set order:[] */
+        $(document).ready(function () {     
+            var table = $('#example').DataTable({   /*  Function call to use JQuery Datatable*/
+                "order": []      /* to Leave unsorted, set order:[] */
             });
+            var tableTools = new $.fn.dataTable.TableTools(table, {           /*  Function call for pdf download*/
+                'sSwfPath': '//cdn.datatables.net/tabletools/2.2.4/swf/copy_csv_xls_pdf.swf',
+                'aButtons': ['print','pdf']
+            });
+            $(tableTools.fnContainer()).insertAfter('#example_wrapper');
 
-            $('.toggle-class').change(function(){
-                //var status = $(this).prop('checked')===true? 1:0;
+
+            $('.toggle-class').change(function(){        /*ajax code to update Is Paid Status*/
                 var tadaHistoryId = $(this).data('id');
                 var json = { tadaHistoryId: tadaHistoryId }
                 $.ajax({
