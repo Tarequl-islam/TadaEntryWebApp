@@ -1,7 +1,11 @@
 # TadaEntryWebApp
+
+## Tech Stack:
+ * .NET MVC
+ * C#
+ * MS SQL Server
  
 ## How to run the project
-
  * install Visual Studio 2013,
  * install SQL Server Management Studio,
 <br>
