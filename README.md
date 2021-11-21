@@ -6,6 +6,7 @@
  * MS SQL Server
  * Jquery 
  * Bootstrap 
+ * Ajax
  
 ## How to run the project
  * install Visual Studio 2013,
