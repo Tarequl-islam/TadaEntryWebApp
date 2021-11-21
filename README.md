@@ -4,6 +4,8 @@
  * .NET MVC
  * C#
  * MS SQL Server
+ * Jquery 
+ * Bootstrap 
  
 ## How to run the project
  * install Visual Studio 2013,
